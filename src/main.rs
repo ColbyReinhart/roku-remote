@@ -2,51 +2,60 @@
 // By Colby Reinhart
 // 1-10-2023
 
-use std::
-{
-	net::{UdpSocket, Ipv4Addr},
-	io::BufReader,
-	fs::File, time::Duration
-};
+use std::{net::{IpAddr, Ipv4Addr, TcpStream, SocketAddr}, io::{Write, Read}};
+
+use local_ip_address::local_ip;
 
 fn main()
 {
 	find_devices();
 }
 
+// Discover devices on the LAN
 fn find_devices()
 {
-	// Set up a UDP socket
-	let socket: UdpSocket = UdpSocket::bind("127.0.0.1:5000")
-		.expect("Server couldn't bind to address");
-	println!("Set up socket");
+	// Roku API documentation says to use SSDP, but I can't get it to work
+	// correctly. Instead, we'll send a /query/device-info API request to
+	// each reachable endpoint on the network and consider any valid responses
+	// as a roku device.
+	// TVs seem to not respond to network communication if they've been
+	// powered off for a while. Idk how the remote app gets around all
+	// these issues, but I wish it was documented.
 
-	// Configure socket
-	socket.join_multicast_v4(&Ipv4Addr::new(239, 255, 255, 250), &Ipv4Addr::UNSPECIFIED).unwrap();
-	socket.set_read_timeout(Some(Duration::new(10, 0))).unwrap(); // Only wait 10 seconds
+	// To scan every device on the current subnet, we'll find the host
+	// machine's current IP address. I know this is bad, but we'll just
+	// assume that the subnet mask is 24, since that applies to 99% of
+	// home networks.
 
-	// Buffer in the request body of the multicast message
-	let multicast_body: File = File::open("static/roku-ecp-req.txt").unwrap();
-	let buffer: BufReader<File> = BufReader::new(multicast_body);
-	println!("Read in multicast request body");
-
-	// Send the multicast and get the result
-	socket.send_to(buffer.buffer(), "239.255.255.250:1900").unwrap();
-	println!("Sent multicast");
-
-	let mut buf = [0u8; 256];
-	match socket.recv_from(&mut buf)
+	let host_ip: IpAddr = local_ip().expect("Couldn't determine host ip");
+	let octets: [u8; 4] = match host_ip
 	{
-		Ok((len, remote_addr)) =>
+		IpAddr::V4(ip4) => ip4.octets(),
+		IpAddr::V6(_) => panic!() // This shouldn't ever happen
+	};
+	
+	// For all possible device addresses
+	for i in 1u8..254u8
+	{
+		// Construct the address
+		let addr: SocketAddr = SocketAddr::new
+		(
+			IpAddr::V4(Ipv4Addr::new(octets[0], octets[1], octets[2], i)),
+			8060
+		);
+
+		println!("Testing {:?}", addr);
+		
+		// Connect to the address
+		if let Ok(mut stream) = TcpStream::connect(addr)
 		{
-			let data = &buf[..len];
-			let response = String::from_utf8_lossy(data);
-			println!("Got response from {}", remote_addr);
-			println!("{}", response);
-		}
-		Err(err) =>
-		{
-			println!("{}", err);
+			// If we connected successfully, try to query device info
+			stream.write(&"GET /query/device-info HTTP/1.1\r\n\r\n".as_bytes())
+				.unwrap();
+			let mut buf: String = String::new();
+			stream.read_to_string(&mut buf).unwrap();
+
+			println!("{}", buf);
 		}
 	}
 }

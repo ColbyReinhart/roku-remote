@@ -1,6 +1,7 @@
 use std::net::Ipv4Addr;
 
 // Define a device info struct
+#[derive(Debug)]
 pub struct RokuDevice
 {
     pub name: String,

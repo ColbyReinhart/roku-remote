@@ -14,7 +14,7 @@ use local_ip_address::local_ip;
 use roku_remote::RokuDevice;
 use roxmltree::Document;
 
-static SUBNET_SEARCH_LIMIT: u8 = 25;	// Last number of subnet to check (exclusive)
+static SUBNET_SEARCH_LIMIT: u8 = 15;	// Last number of subnet to check (exclusive)
 
 fn main()
 {

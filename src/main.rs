@@ -4,8 +4,8 @@
 
 use std::
 {
-	net::{IpAddr, Ipv4Addr, TcpStream, SocketAddr},
-	io::{Write, Read},
+	net::{IpAddr, Ipv4Addr, TcpStream, TcpListener, SocketAddr},
+	io::{Write, Read, BufReader},
 	time::Duration,
 	str::Split,
 };
@@ -13,17 +13,46 @@ use std::
 use local_ip_address::local_ip;
 use roku_remote::RokuDevice;
 use roxmltree::Document;
+use httparse::{Header, Request};
 
 static SUBNET_SEARCH_LIMIT: u8 = 15;	// Last number of subnet to check (exclusive)
 
 fn main()
 {
-	let found_devices: Vec<RokuDevice> = find_devices();
-	for device in found_devices
+	// First, search the current subnet for Roku devices
+	let devices: Vec<RokuDevice> = find_devices();
+	for device in &devices
 	{
 		println!("{:?}", device);
 	}
+
+	// Create a socket to listen for requests on LAN
+	let listener: TcpListener = TcpListener::bind("127.0.0.1:80").unwrap();
+
+    for stream in listener.incoming()
+	{
+        let stream: TcpStream = stream.unwrap();
+
+        handle_request(stream, &devices);
+    }
 }
+
+// Handle a request
+fn handle_request(mut stream: TcpStream, devices: & Vec<RokuDevice>)
+{
+	// Read out the request to a string
+	let mut buf_reader = BufReader::new(&mut stream);
+	let mut buf: String = String::new();
+	buf_reader.read_to_string(&mut buf).unwrap();
+
+	// Parse out the request
+	let mut headers : [Header; 64] = [httparse::EMPTY_HEADER; 64];
+	let mut req: Request = httparse::Request::new(&mut headers);
+	
+	// TODO: Should I use a match here?
+
+}
+
 
 // Discover devices on the LAN
 fn find_devices() -> Vec<RokuDevice>
@@ -75,6 +104,7 @@ fn find_devices() -> Vec<RokuDevice>
 
 			// Parse the response. Start by separating the head and body. We're assuming
 			// the response complies with HTTP, because I'm lazy
+			// TODO: Use httparse here!
 			let mut head_and_body: Split<&str> = buf.split("\r\n\r\n");
 			let head: &str = head_and_body.next().expect("Response does not have valid header");
 			let body: &str = head_and_body.next().expect("Response does not have valid body");

@@ -5,7 +5,7 @@
 use std::
 {
 	net::{IpAddr, Ipv4Addr, TcpStream, TcpListener, SocketAddr},
-	io::{Write, Read, BufReader},
+	io::{Write, Read},
 	time::Duration,
 	str::Split,
 };
@@ -13,7 +13,7 @@ use std::
 use local_ip_address::local_ip;
 use roku_remote::RokuDevice;
 use roxmltree::Document;
-use httparse::{Header, Request};
+use http_request_parser::{Request, Response};
 
 static SUBNET_SEARCH_LIMIT: u8 = 15;	// Last number of subnet to check (exclusive)
 
@@ -27,30 +27,99 @@ fn main()
 	}
 
 	// Create a socket to listen for requests on LAN
-	let listener: TcpListener = TcpListener::bind("127.0.0.1:80").unwrap();
+	let listener: TcpListener = TcpListener::bind("127.0.0.1:5000").unwrap();
 
     for stream in listener.incoming()
 	{
         let stream: TcpStream = stream.unwrap();
-
-        handle_request(stream, &devices);
+        handle_request(& stream, &devices);
     }
 }
 
 // Handle a request
-fn handle_request(mut stream: TcpStream, devices: & Vec<RokuDevice>)
+fn handle_request(stream: & TcpStream, devices: & Vec<RokuDevice>)
 {
-	// Read out the request to a string
-	let mut buf_reader = BufReader::new(&mut stream);
-	let mut buf: String = String::new();
-	buf_reader.read_to_string(&mut buf).unwrap();
+	// Read in and parse the request
+	let req: Request = Request::from(&stream);
+	let mut res: Response = Response::new();
 
-	// Parse out the request
-	let mut headers : [Header; 64] = [httparse::EMPTY_HEADER; 64];
-	let mut req: Request = httparse::Request::new(&mut headers);
-	
-	// TODO: Should I use a match here?
+	println!("{:?}", req);
 
+	// If they sent a keypress request, find out what key and which device
+	// to send it to
+	if req.method == "PUT" && req.path == "/keypress"
+	{	
+		// What's the device and what key should be pressed?
+		let mut device: &str = "NULL";
+		let mut action: &str = "NULL";
+
+		// We'll assume we're getting a standard form body
+		for form_input in req.body.split("&").into_iter()
+		{
+			// Get the name and value of each input
+			let pair: Vec<&str> = form_input.split("=").collect();
+
+			// Assert valid syntax
+			if pair.len() != 2
+			{
+				res.status = 400;
+				res.status_message = format!("Invalid PUT parameter: {}", pair.join("="));
+				res.send(&stream);
+				return;
+			}
+
+			match pair.get(0).expect("Could not inspect PUT body parameter")
+			{
+				&"device" => device = pair.get(1).unwrap(),
+				&"action" => action = pair.get(1).unwrap(),
+				_ => () // Inclusion of additional form data is unnecessary but
+						// shouldn't break anything
+			}
+		}
+
+		// Verify that we have the data we need
+		if device == "NULL" || action == "NULL"
+		{
+			res.status = 400;
+			res.status_message = "Incorrect parameters for keypress call!".to_owned();
+			res.send(&stream);
+			return;
+		}
+
+		// Now that we have the device and action, lets get the info we need
+		// and send out the command.
+		let device_info: Vec<&RokuDevice> = devices.
+			into_iter()
+			.filter(|roku| roku.name == device)
+			.collect();
+
+		// Handle the case where the device doesn't exist
+		if device_info.is_empty()
+		{
+			res.status = 400;
+			res.status_message = format!("No device found with name: {}", device);
+			res.send(&stream);
+			return;
+		}
+
+		// We'll assume that Rokus can't have the same device name. If this assumption is wrong,
+		// then whichever Roku has the lower IP address (was inserted into the vector first)
+		// will be issued the command
+		let device_to_command: &&RokuDevice = device_info.get(0).unwrap();
+		let device_socket: SocketAddr =
+			SocketAddr::new(IpAddr::V4(device_to_command.address), 8060);
+		
+		// Write the request
+		let mut command: TcpStream = TcpStream::connect(device_socket).unwrap();
+		command.write("POST /keypress/".as_bytes()).unwrap();
+		command.write(action.as_bytes()).unwrap();
+		command.write(" HTTP/1.1\r\n\r\n".as_bytes()).unwrap();
+
+		// Listen for the response (I don't care about it for now)
+		let mut command_res: String = String::new();
+		command.read_to_string(&mut command_res).unwrap();
+		println!("{}", command_res);
+	}
 }
 
 

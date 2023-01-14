@@ -9,10 +9,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
 
 [[package]]
-name = "httparse"
-version = "1.8.0"
+name = "http_request_parser"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d897f394bad6a705d5f4104762e116a75639e470d80901eed05a860a95cb1904"
+checksum = "60d854b32d24f750c286191506730ad01771d7bb9a08954348d21b8a42a34f1c"
 
 [[package]]
 name = "itoa"
@@ -70,7 +70,7 @@ dependencies = [
 name = "roku-remote"
 version = "0.1.0"
 dependencies = [
- "httparse",
+ "http_request_parser",
  "local-ip-address",
  "roxmltree",
  "serde",

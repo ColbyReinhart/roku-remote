@@ -7,7 +7,7 @@ use std::
 	net::{IpAddr, Ipv4Addr, TcpStream, TcpListener, SocketAddr},
 	io::{Write, Read},
 	time::Duration,
-	str::Split,
+	str::Split, fs::read_to_string,
 };
 
 use local_ip_address::local_ip;
@@ -31,13 +31,13 @@ fn main()
 
     for stream in listener.incoming()
 	{
-        let stream: TcpStream = stream.unwrap();
-        handle_request(& stream, &devices);
+        let mut stream: TcpStream = stream.unwrap();
+        handle_request(&mut stream, &devices);
     }
 }
 
 // Handle a request
-fn handle_request(stream: & TcpStream, devices: & Vec<RokuDevice>)
+fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 {
 	// Read in and parse the request
 	let req: Request = Request::from(&stream);
@@ -64,7 +64,7 @@ fn handle_request(stream: & TcpStream, devices: & Vec<RokuDevice>)
 			{
 				res.status = 400;
 				res.status_message = format!("Invalid PUT parameter: {}", pair.join("="));
-				res.send(&stream);
+				res.send(stream);
 				return;
 			}
 
@@ -82,7 +82,7 @@ fn handle_request(stream: & TcpStream, devices: & Vec<RokuDevice>)
 		{
 			res.status = 400;
 			res.status_message = "Incorrect parameters for keypress call!".to_owned();
-			res.send(&stream);
+			res.send(stream);
 			return;
 		}
 
@@ -98,7 +98,7 @@ fn handle_request(stream: & TcpStream, devices: & Vec<RokuDevice>)
 		{
 			res.status = 400;
 			res.status_message = format!("No device found with name: {}", device);
-			res.send(&stream);
+			res.send(stream);
 			return;
 		}
 
@@ -115,10 +115,30 @@ fn handle_request(stream: & TcpStream, devices: & Vec<RokuDevice>)
 		command.write(action.as_bytes()).unwrap();
 		command.write(" HTTP/1.1\r\n\r\n".as_bytes()).unwrap();
 
-		// Listen for the response (I don't care about it for now)
+		// Listen for the response and send it along to the client
 		let mut command_res: String = String::new();
 		command.read_to_string(&mut command_res).unwrap();
+		
 		println!("{}", command_res);
+
+		stream.write(command_res.as_bytes()).unwrap();
+	}
+	// A GET to root will just serve the HTML
+	else if req.method == "GET" && req.path == "/"
+	{
+		res.status = 200;
+
+		// Read in index, set as the response body, and send it along
+		let file: String = read_to_string("static/index.html")
+			.expect("Could not open index.html");
+		res.body = file;
+		res.send(stream);
+	}
+	// Everything else is a 404
+	else
+	{
+		res.status = 404;
+		res.send(stream);
 	}
 }
 

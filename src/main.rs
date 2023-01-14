@@ -27,7 +27,7 @@ fn main()
 	}
 
 	// Create a socket to listen for requests on LAN
-	let listener: TcpListener = TcpListener::bind("127.0.0.1:5000").unwrap();
+	let listener: TcpListener = TcpListener::bind("0.0.0.0:5000").unwrap();
 
     for stream in listener.incoming()
 	{

@@ -40,6 +40,7 @@ fn main()
 fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 {
 	// Read in and parse the request
+	let mut temp = String::new();
 	let req: Request = Request::from(&stream);
 	let mut res: Response = Response::new();
 
@@ -131,6 +132,7 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 		// Read in index, set as the response body, and send it along
 		let file: String = read_to_string("static/index.html")
 			.expect("Could not open index.html");
+		res.headers.push("Content-Type: text/html; charset=utf-8".to_owned());
 		res.body = file;
 		res.send(stream);
 	}

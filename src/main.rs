@@ -20,8 +20,8 @@ static SUBNET_SEARCH_LIMIT: u8 = 15;	// Last number of subnet to check (exclusiv
 fn main()
 {
 	// First, search the current subnet for Roku devices
-	///let devices: Vec<RokuDevice> = find_devices();
-	let devices: Vec<RokuDevice> = Vec::new();///
+	let devices: Vec<RokuDevice> = find_devices();
+	///let devices: Vec<RokuDevice> = Vec::new();///
 	for device in &devices
 	{
 		println!("{:?}", device);
@@ -137,7 +137,7 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 		res.send(stream);
 	}
 	// A GET to /devices will return a list of device names
-	else if req.method == "GET" && req.path == "/"
+	else if req.method == "GET" && req.path == "/devices"
 	{
 		res.status = 200;
 		let device_names: Vec<String> = devices.into_iter()
@@ -150,6 +150,7 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 	else
 	{
 		res.status = 404;
+		res.status_message = "Not Found".to_owned();
 		res.send(stream);
 	}
 }

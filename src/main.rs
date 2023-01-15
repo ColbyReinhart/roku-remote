@@ -136,6 +136,16 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 		res.body = file;
 		res.send(stream);
 	}
+	// A GET to /devices will return a list of device names
+	else if req.method == "GET" && req.path == "/"
+	{
+		res.status = 200;
+		let device_names: Vec<String> = devices.into_iter()
+			.map(|f| f.name.to_owned())
+			.collect();
+		res.body = device_names.join(",");
+		res.send(stream);
+	}
 	// Everything else is a 404
 	else
 	{

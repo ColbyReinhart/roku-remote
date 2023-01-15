@@ -20,7 +20,8 @@ static SUBNET_SEARCH_LIMIT: u8 = 15;	// Last number of subnet to check (exclusiv
 fn main()
 {
 	// First, search the current subnet for Roku devices
-	let devices: Vec<RokuDevice> = find_devices();
+	///let devices: Vec<RokuDevice> = find_devices();
+	let devices: Vec<RokuDevice> = Vec::new();///
 	for device in &devices
 	{
 		println!("{:?}", device);
@@ -40,7 +41,6 @@ fn main()
 fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 {
 	// Read in and parse the request
-	let mut temp = String::new();
 	let req: Request = Request::from(&stream);
 	let mut res: Response = Response::new();
 

@@ -12,21 +12,106 @@
 				position: absolute;
 			}
 
+			body {
+				background-color: #222222;
+			}
+
 			button {
-				background-color: purple;
+				position: absolute;
 				border: none;
-				border-radius: 5vh;
 				font-size: 5vh;
 				font-weight: bolder;
 			}
+
+			i {
+				position: relative;
+			}
+
+			#deviceList {
+				width: 50vw;
+				height: 5vh;
+				position: absolute;
+				top: 2vh;
+				left: 22.5vw;
+			}
+
+			#PowerOn, #PowerOff {
+				top: 1vh;
+				width: 16vw;
+				height: 16vw;
+				border-radius: 8vw;
+			}
+			#PowerOn {
+				background-color: green;
+				left: 2vw;
+			}
+			#PowerOff {
+				background-color: red;
+				left: 78vw;
+			}
+
+			#Up, #Down, #Left, #Right {
+				background-color: purple;
+				width: 25vw;
+				height: 25vw;
+				border-radius: 5vw;
+			}
+			#Up {
+				top: 25vh;
+				left: 35vw;
+			}
+			#Down {
+				top: 50vh;
+				left: 35vw;
+			}
+			#Left {
+				top: 37.5vh;
+				left: 10vw;
+			}
+			#Right {
+				top: 37.5vh;
+				left: 60vw;
+			}
+
+			#Select {
+				background-color: purple;
+				width: 22vw;
+				height: 22vw;
+				border-radius: 15vw;
+				top: 38vh;
+				left: 36.5vw;
+			}
+
 		</style>
 		<script>
 
 		</script>
 	</head>
 	<body>
+		<!-- TV Input (populated by getDevices()) -->
+		<select id="deviceList"></select>
+
+		<!-- Power Buttons -->
 		<button id="PowerOn" class="keypress">
 			<i class="fa-solid fa-power-off"></i>
 		</button>
+		<button id="PowerOff" class="keypress">
+			<i class="fa-solid fa-power-off"></i>
+		</button>
+
+		<!-- Arrow Pad -->
+		<button id="Up" class="keypress">
+			<i class="fa-solid fa-chevron-up"></i>
+		</button>
+		<button id="Down" class="keypress">
+			<i class="fa-solid fa-chevron-down"></i>
+		</button>
+		<button id="Left" class="keypress">
+			<i class="fa-solid fa-chevron-left"></i>
+		</button>
+		<button id="Right" class="keypress">
+			<i class="fa-solid fa-chevron-right"></i>
+		</button>
+		<button id="Select" class="keypress"></button>
 	</body>
 </html>

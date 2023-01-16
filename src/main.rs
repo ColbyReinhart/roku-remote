@@ -116,13 +116,12 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 		command.write(action.as_bytes()).unwrap();
 		command.write(" HTTP/1.1\r\n\r\n".as_bytes()).unwrap();
 
-		// Listen for the response and send it along to the client
-		let mut command_res: String = String::new();
-		command.read_to_string(&mut command_res).unwrap();
-		
-		println!("{}", command_res);
-
-		stream.write(command_res.as_bytes()).unwrap();
+		// For some reason the TV takes a few seconds to respond, and we don't
+		// want to waste time listening for a response that we don't really care
+		// about. Actually, we should care, but until I figure out multithreading
+		// this is the only way to get things to run smoothly
+		res.status = 200;
+		res.send(stream);
 	}
 	// A GET to root will just serve the HTML
 	else if req.method == "GET" && req.path == "/"

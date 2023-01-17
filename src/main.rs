@@ -21,7 +21,6 @@ fn main()
 {
 	// First, search the current subnet for Roku devices
 	let devices: Vec<RokuDevice> = find_devices();
-	///let devices: Vec<RokuDevice> = Vec::new();///
 	for device in &devices
 	{
 		println!("{:?}", device);

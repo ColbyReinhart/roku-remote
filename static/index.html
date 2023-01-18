@@ -8,6 +8,7 @@
 		<script src="https://kit.fontawesome.com/e4862ea8a4.js" crossorigin="anonymous"></script>
 		
 		<style>
+			/* General */
 			* {
 				position: absolute;
 			}
@@ -25,6 +26,12 @@
 
 			i {
 				position: relative;
+			}
+
+			.RokuButton {
+				color: white;
+				background-color: purple;
+				border-radius: 5vw;
 			}
 
 			/* TV Input (populated by getDevices()) */
@@ -55,12 +62,9 @@
 			/* Home and Back Buttons */
 			#Home, #Back {
 				font-size: 7vh;
-				color: white;
-				background-color: purple;
 				width: 30vw;
-				height: 10vh;
+				height: 9vh;
 				top: 12vh;
-				border-radius: 5vw;
 			}
 			#Home {
 				left: 55vw;
@@ -72,11 +76,8 @@
 			/* Arrow Pad */
 			#Up, #Down, #Left, #Right {
 				font-size: 10vh;
-				color: white;
-				background-color: purple;
 				width: 25vw;
 				height: 25vw;
-				border-radius: 5vw;
 			}
 			#Up {
 				top: 25vh;
@@ -95,12 +96,27 @@
 				left: 60vw;
 			}
 			#Select {
-				background-color: purple;
 				width: 22vw;
 				height: 22vw;
 				border-radius: 10vw;
 				top: 38vh;
 				left: 36.5vw;
+			}
+
+			/* Playback Controls */
+			#Play, #Rev, #Fwd {
+				width: 25vw;
+				height: 8vh;
+				top: 65vh;
+			}
+			#Play {
+				left: 35vw;
+			}
+			#Rev {
+				left: 5vw;
+			}
+			#Fwd {
+				left: 65vw;
 			}
 
 		</style>
@@ -120,28 +136,39 @@
 			</button>
 
 			<!-- Home and Back Buttons -->
-			<button id="Home" class="keypress">
+			<button id="Home" class="keypress RokuButton">
 				<i class="fa-solid fa-house"></i>
 			</button>
-			<button id="Back" class="keypress">
+			<button id="Back" class="keypress  RokuButton">
 				<i class="fa-solid fa-left-long"></i>
 			</button>
 
 			<!-- Arrow Pad -->
-			<div id="ArrowPadBase"></div>
-			<button id="Up" class="keypress">
+			<button id="Up" class="keypress RokuButton">
 				<i class="fa-solid fa-chevron-up"></i>
 			</button>
-			<button id="Down" class="keypress">
+			<button id="Down" class="keypress RokuButton">
 				<i class="fa-solid fa-chevron-down"></i>
 			</button>
-			<button id="Left" class="keypress">
+			<button id="Left" class="keypress RokuButton">
 				<i class="fa-solid fa-chevron-left"></i>
 			</button>
-			<button id="Right" class="keypress">
+			<button id="Right" class="keypress RokuButton">
 				<i class="fa-solid fa-chevron-right"></i>
 			</button>
-			<button id="Select" class="keypress"></button>
+			<button id="Select" class="keypress RokuButton"></button>
+
+			<!-- Playback Controls -->
+			<button id="Play" class="keypress RokuButton">
+				<i class="fa-solid fa-play"></i>
+				<i class="fa-solid fa-pause"></i>
+			</button>
+			<button id="Rev" class="keypress RokuButton">
+				<i class="fa-solid fa-backward"></i>
+			</button>
+			<button id="Fwd" class="keypress RokuButton">
+				<i class="fa-solid fa-forward"></i>
+			</button>
 		</div>
 
 	</body>

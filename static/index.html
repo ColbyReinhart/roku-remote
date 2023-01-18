@@ -27,6 +27,7 @@
 				position: relative;
 			}
 
+			/* TV Input (populated by getDevices()) */
 			#deviceList {
 				width: 50vw;
 				height: 5vh;
@@ -35,6 +36,7 @@
 				left: 22.5vw;
 			}
 
+			/* Power Buttons */
 			#PowerOn, #PowerOff {
 				top: 1vh;
 				width: 16vw;
@@ -50,7 +52,27 @@
 				left: 78vw;
 			}
 
+			/* Home and Back Buttons */
+			#Home, #Back {
+				font-size: 7vh;
+				color: white;
+				background-color: purple;
+				width: 30vw;
+				height: 10vh;
+				top: 12vh;
+				border-radius: 5vw;
+			}
+			#Home {
+				left: 55vw;
+			}
+			#Back {
+				left: 10vw;
+			}
+
+			/* Arrow Pad */
 			#Up, #Down, #Left, #Right {
+				font-size: 10vh;
+				color: white;
 				background-color: purple;
 				width: 25vw;
 				height: 25vw;
@@ -72,12 +94,11 @@
 				top: 37.5vh;
 				left: 60vw;
 			}
-
 			#Select {
 				background-color: purple;
 				width: 22vw;
 				height: 22vw;
-				border-radius: 15vw;
+				border-radius: 10vw;
 				top: 38vh;
 				left: 36.5vw;
 			}
@@ -85,31 +106,44 @@
 		</style>
 	</head>
 	<body>
-		<!-- TV Input (populated by getDevices()) -->
-		<select id="deviceList"></select>
 
-		<!-- Power Buttons -->
-		<button id="PowerOn" class="keypress">
-			<i class="fa-solid fa-power-off"></i>
-		</button>
-		<button id="PowerOff" class="keypress">
-			<i class="fa-solid fa-power-off"></i>
-		</button>
+		<div id="remote">
+			<!-- TV Input (populated by getDevices()) -->
+			<select id="deviceList"></select>
 
-		<!-- Arrow Pad -->
-		<button id="Up" class="keypress">
-			<i class="fa-solid fa-chevron-up"></i>
-		</button>
-		<button id="Down" class="keypress">
-			<i class="fa-solid fa-chevron-down"></i>
-		</button>
-		<button id="Left" class="keypress">
-			<i class="fa-solid fa-chevron-left"></i>
-		</button>
-		<button id="Right" class="keypress">
-			<i class="fa-solid fa-chevron-right"></i>
-		</button>
-		<button id="Select" class="keypress"></button>
+			<!-- Power Buttons -->
+			<button id="PowerOn" class="keypress">
+				<i class="fa-solid fa-power-off"></i>
+			</button>
+			<button id="PowerOff" class="keypress">
+				<i class="fa-solid fa-power-off"></i>
+			</button>
+
+			<!-- Home and Back Buttons -->
+			<button id="Home" class="keypress">
+				<i class="fa-solid fa-house"></i>
+			</button>
+			<button id="Back" class="keypress">
+				<i class="fa-solid fa-left-long"></i>
+			</button>
+
+			<!-- Arrow Pad -->
+			<div id="ArrowPadBase"></div>
+			<button id="Up" class="keypress">
+				<i class="fa-solid fa-chevron-up"></i>
+			</button>
+			<button id="Down" class="keypress">
+				<i class="fa-solid fa-chevron-down"></i>
+			</button>
+			<button id="Left" class="keypress">
+				<i class="fa-solid fa-chevron-left"></i>
+			</button>
+			<button id="Right" class="keypress">
+				<i class="fa-solid fa-chevron-right"></i>
+			</button>
+			<button id="Select" class="keypress"></button>
+		</div>
+
 	</body>
 	<script type="text/javascript">
 

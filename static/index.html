@@ -43,20 +43,25 @@
 				left: 22.5vw;
 			}
 
-			/* Power Buttons */
-			#PowerOn, #PowerOff {
+			/* Power Button */
+			#Power {
 				top: 1vh;
+				left: 2vw;
 				width: 16vw;
 				height: 16vw;
 				border-radius: 8vw;
 			}
-			#PowerOn {
-				background-color: green;
-				left: 2vw;
-			}
-			#PowerOff {
-				background-color: red;
+
+			/* Features button */
+			#Features {
+				top: 1vh;
 				left: 78vw;
+				width: 16vw;
+				height: 16vw;
+				background-color: #222222;
+				color: white;
+				border: solid white 5px;
+				border-radius: 5vw;
 			}
 
 			/* Home and Back Buttons */
@@ -127,12 +132,14 @@
 			<!-- TV Input (populated by getDevices()) -->
 			<select id="deviceList"></select>
 
-			<!-- Power Buttons -->
-			<button id="PowerOn" class="keypress">
+			<!-- Power Button -->
+			<button id="Power" class="keypress RokuButton">
 				<i class="fa-solid fa-power-off"></i>
 			</button>
-			<button id="PowerOff" class="keypress">
-				<i class="fa-solid fa-power-off"></i>
+
+			<!-- Features Button -->
+			<button id="Features">
+				<i class="fa-solid fa-bars"></i>
 			</button>
 
 			<!-- Home and Back Buttons -->

@@ -108,19 +108,24 @@
 				left: 36.5vw;
 			}
 
-			/* Playback Controls */
+			/* Playback Controls and Volume Controls */
 			#Play, #Rev, #Fwd {
 				width: 25vw;
 				height: 8vh;
 				top: 65vh;
 			}
-			#Play {
+			#VolumeUp, #VolumeDown, #VolumeMute {
+				width: 25vw;
+				height: 8vh;
+				top: 75vh;
+			}
+			#Play, #VolumeMute {
 				left: 35vw;
 			}
-			#Rev {
+			#Rev, #VolumeDown {
 				left: 5vw;
 			}
-			#Fwd {
+			#Fwd, #VolumeUp {
 				left: 65vw;
 			}
 
@@ -175,6 +180,17 @@
 			</button>
 			<button id="Fwd" class="keypress RokuButton">
 				<i class="fa-solid fa-forward"></i>
+			</button>
+
+			<!-- Volume Controls -->
+			<button id="VolumeDown" class="keypress RokuButton">
+				<i class="fa-solid fa-volume-low"></i>
+			</button>
+			<button id="VolumeUp" class="keypress RokuButton">
+				<i class="fa-solid fa-volume-high"></i>
+			</button>
+			<button id="VolumeMute" class="keypress RokuButton">
+				<i class="fa-solid fa-volume-xmark"></i>
 			</button>
 		</div>
 

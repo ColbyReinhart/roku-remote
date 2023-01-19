@@ -9,18 +9,14 @@
 		
 		<style>
 			/* General */
-			* {
-				position: absolute;
-			}
 
 			body {
 				background-color: #222222;
 			}
 
 			button {
-				position: absolute;
 				border: none;
-				font-size: 5vh;
+				font-size: 3rem;
 				font-weight: bolder;
 			}
 
@@ -31,102 +27,56 @@
 			.RokuButton {
 				color: white;
 				background-color: purple;
-				border-radius: 5vw;
+				border-radius: 5vmin;
+				padding: 1rem;
 			}
 
-			/* TV Input (populated by getDevices()) */
-			#deviceList {
-				width: 50vw;
-				height: 5vh;
-				position: absolute;
-				top: 2vh;
-				left: 22.5vw;
+			.arrowButton {
+				font-size: 4rem;
+				margin: 0.3rem;
 			}
 
-			/* Power Button */
+			.buttonRow {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: space-evenly;
+				align-items: center;
+				align-content: flex-start;
+				margin-top: 2vh;
+				margin-bottom: 2vh;
+			}
+
+			.arrowKeysRow {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				justify-content: center;
+				align-items: center;
+				align-content: flex-start;
+			}
+
+			/* ID Styles */
+			
 			#Power {
-				top: 1vh;
-				left: 2vw;
-				width: 16vw;
-				height: 16vw;
-				border-radius: 8vw;
+				border-radius: 2rem;
 			}
 
-			/* Features button */
+			#deviceList {
+				width: 40vw;
+				height: 5vh;
+			}
+
 			#Features {
-				top: 1vh;
-				left: 78vw;
-				width: 16vw;
-				height: 16vw;
 				background-color: #222222;
-				color: white;
 				border: solid white 5px;
-				border-radius: 5vw;
+				padding: 0.5rem;
+				color: white;
+				border-radius: 0.5rem;
 			}
 
-			/* Home and Back Buttons */
 			#Home, #Back {
-				font-size: 7vh;
 				width: 30vw;
-				height: 9vh;
-				top: 12vh;
-			}
-			#Home {
-				left: 55vw;
-			}
-			#Back {
-				left: 10vw;
-			}
-
-			/* Arrow Pad */
-			#Up, #Down, #Left, #Right {
-				font-size: 10vh;
-				width: 25vw;
-				height: 25vw;
-			}
-			#Up {
-				top: 25vh;
-				left: 35vw;
-			}
-			#Down {
-				top: 50vh;
-				left: 35vw;
-			}
-			#Left {
-				top: 37.5vh;
-				left: 10vw;
-			}
-			#Right {
-				top: 37.5vh;
-				left: 60vw;
-			}
-			#Select {
-				width: 22vw;
-				height: 22vw;
-				border-radius: 10vw;
-				top: 38vh;
-				left: 36.5vw;
-			}
-
-			/* Playback Controls and Volume Controls */
-			#Play, #Rev, #Fwd {
-				width: 25vw;
-				height: 8vh;
-				top: 65vh;
-			}
-			#VolumeUp, #VolumeDown, #VolumeMute {
-				width: 25vw;
-				height: 8vh;
-				top: 75vh;
-			}
-			#Play, #VolumeMute {
-				left: 35vw;
-			}
-			#Rev, #VolumeDown {
-				left: 5vw;
-			}
-			#Fwd, #VolumeUp {
-				left: 65vw;
 			}
 
 		</style>
@@ -134,64 +84,78 @@
 	<body>
 
 		<div id="remote">
-			<!-- TV Input (populated by getDevices()) -->
-			<select id="deviceList"></select>
 
-			<!-- Power Button -->
-			<button id="Power" class="keypress RokuButton">
-				<i class="fa-solid fa-power-off"></i>
-			</button>
+			<!-- Power Button, Input, and Feature Menu -->
+			<div id="topMenu" class="buttonRow">
+				<button id="Power" class="keypress RokuButton">
+					<i class="fa-solid fa-power-off"></i>
+				</button>
+				<select id="deviceList"></select>
+				<button id="Features">
+					<i class="fa-solid fa-bars"></i>
+				</button>
+			</div>
 
-			<!-- Features Button -->
-			<button id="Features">
-				<i class="fa-solid fa-bars"></i>
-			</button>
+			<!-- Home and Back Button -->
+			<div id="homeBack" class="buttonRow">
+				<button id="Home" class="keypress RokuButton">
+					<i class="fa-solid fa-house"></i>
+				</button>
+				<button id="Back" class="keypress  RokuButton">
+					<i class="fa-solid fa-left-long"></i>
+				</button>
+			</div>
 
-			<!-- Home and Back Buttons -->
-			<button id="Home" class="keypress RokuButton">
-				<i class="fa-solid fa-house"></i>
-			</button>
-			<button id="Back" class="keypress  RokuButton">
-				<i class="fa-solid fa-left-long"></i>
-			</button>
+			<!-- Arrow Keys -->
+			<div id="ArrowKeysTop" class="arrowKeysRow">
+				<button id="Up" class="keypress RokuButton arrowButton">
+					<i class="fa-solid fa-chevron-up"></i>
+				</button>
+			</div>
+			<div id="ArrowKeysMiddle" class="arrowKeysRow">
+				<button id="Left" class="keypress RokuButton arrowButton">
+					<i class="fa-solid fa-chevron-left"></i>
+				</button>
+				<button id="Select" class="keypress RokuButton arrowButton">
+					<i class="fa-solid fa-circle"></i>
+				</button>
+				<button id="Right" class="keypress RokuButton arrowButton">
+					<i class="fa-solid fa-chevron-right"></i>
+				</button>
+			</div>
+			<div id="ArrowKeysBottom" class="arrowKeysRow">
+				<button id="Down" class="keypress RokuButton arrowButton">
+					<i class="fa-solid fa-chevron-down"></i>
+				</button>
+			</div>
 
-			<!-- Arrow Pad -->
-			<button id="Up" class="keypress RokuButton">
-				<i class="fa-solid fa-chevron-up"></i>
-			</button>
-			<button id="Down" class="keypress RokuButton">
-				<i class="fa-solid fa-chevron-down"></i>
-			</button>
-			<button id="Left" class="keypress RokuButton">
-				<i class="fa-solid fa-chevron-left"></i>
-			</button>
-			<button id="Right" class="keypress RokuButton">
-				<i class="fa-solid fa-chevron-right"></i>
-			</button>
-			<button id="Select" class="keypress RokuButton"></button>
-
-			<!-- Playback Controls -->
-			<button id="Play" class="keypress RokuButton">
-				<i class="fa-solid fa-play"></i>
-				<i class="fa-solid fa-pause"></i>
-			</button>
-			<button id="Rev" class="keypress RokuButton">
-				<i class="fa-solid fa-backward"></i>
-			</button>
-			<button id="Fwd" class="keypress RokuButton">
-				<i class="fa-solid fa-forward"></i>
-			</button>
+			<!-- Playback controls-->
+			<div id="playback" class="buttonRow">
+				<button id="Play" class="keypress RokuButton">
+					<i class="fa-solid fa-play"></i>
+					<i class="fa-solid fa-pause"></i>
+				</button>
+				<button id="Rev" class="keypress RokuButton">
+					<i class="fa-solid fa-backward"></i>
+				</button>
+				<button id="Fwd" class="keypress RokuButton">
+					<i class="fa-solid fa-forward"></i>
+				</button>
+			</div>
 
 			<!-- Volume Controls -->
-			<button id="VolumeDown" class="keypress RokuButton">
-				<i class="fa-solid fa-volume-low"></i>
-			</button>
-			<button id="VolumeUp" class="keypress RokuButton">
-				<i class="fa-solid fa-volume-high"></i>
-			</button>
-			<button id="VolumeMute" class="keypress RokuButton">
-				<i class="fa-solid fa-volume-xmark"></i>
-			</button>
+			<div id="volume" class="buttonRow">
+				<button id="VolumeDown" class="keypress RokuButton">
+					<i class="fa-solid fa-volume-low"></i>
+				</button>
+				<button id="VolumeUp" class="keypress RokuButton">
+					<i class="fa-solid fa-volume-high"></i>
+				</button>
+				<button id="VolumeMute" class="keypress RokuButton">
+					<i class="fa-solid fa-volume-xmark"></i>
+				</button>
+			</div>
+			
 		</div>
 
 	</body>

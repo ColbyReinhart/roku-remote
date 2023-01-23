@@ -11,7 +11,7 @@ use std::
 };
 
 use local_ip_address::local_ip;
-use roku_remote::RokuDevice;
+use roku_remote::{RokuDevice, command_device};
 use roxmltree::Document;
 use http_request_parser::{Request, Response};
 
@@ -110,10 +110,16 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 				SocketAddr::new(IpAddr::V4(device_to_command.address), 8060);
 			
 			// Write the request
-			let mut command: TcpStream = TcpStream::connect(device_socket).unwrap();
-			command.write("POST /keypress/".as_bytes()).unwrap();
-			command.write(action.as_bytes()).unwrap();
-			command.write(" HTTP/1.1\r\n\r\n".as_bytes()).unwrap();
+			match command_device(&device_socket, action)
+			{
+				Ok(()) => res.send(stream),
+				Err(error) =>
+				{
+					res.status = 503;
+					res.status_message = "Service Unavailable".to_owned();
+					res.body = error.to_string();
+				}	
+			}
 
 			// For some reason the TV takes a few seconds to respond, and we don't
 			// want to waste time listening for a response that we don't really care

@@ -4,8 +4,6 @@ Roku remote is a home server which allows you to control Roku TVs with your mobi
 without having to install the remote app. Roku TVs use a simple HTTP API to allow themselves
 to be controlled, but CORS prevents this from happening using a mobile browser directly.
 
----
-
 ## Setup
 
 On any device connected to the same LAN subnet as the device you wish to control, clone
@@ -19,7 +17,7 @@ using rust cargo as so:
 The executable will go to PROJECT_ROOT/target/release.
 
 IT IS EXTREMELY RECOMMENDED TO RUN THIS WITH LINUX! Setting up servers on windows is a huge
-pain and is ususally not worth your time. The rest of this tutorial assumes you're using
+pain and is usually not worth your time. The rest of this tutorial assumes you're using
 linux. If you really want to use windows, contact me and I can help you.
 
 Next you'll just need to set up a systemd service to manage the program. If you're new to

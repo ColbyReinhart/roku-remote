@@ -7,7 +7,7 @@ use std::
 	net::{IpAddr, Ipv4Addr, TcpStream, TcpListener, SocketAddr},
 	io::{Write, Read},
 	time::Duration,
-	str::Split, fs::read_to_string,
+	str::Split, fs::{read_to_string, File}, path::{Path, PathBuf},
 };
 
 use local_ip_address::local_ip;
@@ -145,12 +145,66 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 		res.body = device_names.join(",");
 		res.send(stream);
 	}
-	// Everything else is a 404
+	// Everything else we'll try to serve from the static directory
 	else
 	{
-		res.status = 404;
-		res.status_message = "Not Found".to_owned();
-		res.send(stream);
+		// Stop evil hackers
+		if req.path.contains("../")
+		{
+			res.status = 400;
+			res.status_message = "You know what you did.".to_owned();
+			res.send(stream);
+		}
+
+		// Build the path, starting from the static folder
+		let mut path: String = String::from("static");
+		path.push_str(&req.path);
+
+		// Try to get the file the user has requested
+		match File::open(path)
+		{
+			Ok(mut requested_file) => 
+			{
+				// Read the file into a string and set it as the body
+				let mut file_contents: String = String::new();
+				match requested_file.read_to_string(&mut file_contents)
+				{
+					Ok(_) => {},
+					Err(_) =>
+					{
+						res.status = 500;
+						res.status_message = "Internal Server Error".to_owned();
+						res.send(stream);
+						return;
+					},
+				}
+
+				// Set content headers if needed
+				match &req.path.split(".").into_iter().last()
+				{
+					Some(extension) =>
+					{
+						match extension
+						{
+							&"js" => res.headers.push("Content-Type: text/js".to_owned()),
+							&"css" => res.headers.push("Content-Type: text/css".to_owned()),
+							_ => {}
+						}
+					},
+					None => {}
+				}
+
+				// Send the response
+				res.body = file_contents;
+				res.send(stream);
+			},
+			Err(_) =>
+			{
+				res.status = 404;
+				res.status_message = "File not found".to_owned();
+				res.send(stream);
+			},
+		};
 	}
 }
 

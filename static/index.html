@@ -6,80 +6,8 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>Roku Remote</title>
 		<script src="https://kit.fontawesome.com/e4862ea8a4.js" crossorigin="anonymous"></script>
-		
-		<style>
-			/* General */
-
-			body {
-				background-color: #222222;
-			}
-
-			button {
-				border: none;
-				font-size: 3rem;
-				font-weight: bolder;
-			}
-
-			i {
-				position: relative;
-			}
-
-			.RokuButton {
-				color: white;
-				background-color: purple;
-				border-radius: 5vmin;
-				padding: 1rem;
-			}
-
-			.arrowButton {
-				font-size: 4rem;
-				margin: 0.3rem;
-			}
-
-			.buttonRow {
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				justify-content: space-evenly;
-				align-items: center;
-				align-content: flex-start;
-				margin-top: 2vh;
-				margin-bottom: 2vh;
-			}
-
-			.arrowKeysRow {
-				display: flex;
-				flex-direction: row;
-				flex-wrap: nowrap;
-				justify-content: center;
-				align-items: center;
-				align-content: flex-start;
-			}
-
-			/* ID Styles */
-			
-			#Power {
-				border-radius: 2rem;
-			}
-
-			#deviceList {
-				width: 40vw;
-				height: 5vh;
-			}
-
-			#Features {
-				background-color: #222222;
-				border: solid white 5px;
-				padding: 0.5rem;
-				color: white;
-				border-radius: 0.5rem;
-			}
-
-			#Home, #Back {
-				width: 30vw;
-			}
-
-		</style>
+		<link rel="stylesheet" href="index.css">
+		<script type="text/javascript" src="index.js" defer></script>
 	</head>
 	<body>
 
@@ -159,30 +87,4 @@
 		</div>
 
 	</body>
-	<script type="text/javascript">
-
-		// Get the found devices and put them in the dropdown
-		let dropdown = document.querySelector("#deviceList");
-		let xmlHttp = new XMLHttpRequest();
-		xmlHttp.open("GET", "/devices", false);
-		xmlHttp.send(null);
-		xmlHttp.responseText.split("\r\n")[0].split(",").forEach((device) => {
-			let newOption = document.createElement("option");
-			newOption.setAttribute("value", device);
-			newOption.appendChild(document.createTextNode(device));
-			dropdown.appendChild(newOption);
-		});
-
-		// Register an event listener on every keypress button
-		// to make it control the TV
-		document.querySelectorAll(".keypress").forEach((button) => {
-			const command = button.id;
-			button.addEventListener("click", () => {
-				let commandReq = new XMLHttpRequest();
-				commandReq.open("PUT", "/keypress", false);
-				commandReq.send("device=" + document.querySelector("#deviceList").value + "&action=" + command);
-			});
-		});
-
-	</script>
 </html>

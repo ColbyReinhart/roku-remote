@@ -1,0 +1,70 @@
+/* General */
+
+body {
+    background-color: #222222;
+}
+
+button {
+    border: none;
+    font-size: 3rem;
+    font-weight: bolder;
+}
+
+i {
+    position: relative;
+}
+
+.RokuButton {
+    color: white;
+    background-color: purple;
+    border-radius: 5vmin;
+    padding: 1rem;
+}
+
+.arrowButton {
+    font-size: 4rem;
+    margin: 0.3rem;
+}
+
+.buttonRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: flex-start;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.arrowKeysRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+}
+
+/* ID Styles */
+
+#Power {
+    border-radius: 2rem;
+}
+
+#deviceList {
+    width: 40vw;
+    height: 5vh;
+}
+
+#Features {
+    background-color: #222222;
+    border: solid white 5px;
+    padding: 0.5rem;
+    color: white;
+    border-radius: 0.5rem;
+}
+
+#Home, #Back {
+    width: 30vw;
+}

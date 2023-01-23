@@ -18,7 +18,7 @@ The executable will go to PROJECT_ROOT/target/release.
 
 IT IS EXTREMELY RECOMMENDED TO RUN THIS WITH LINUX! Setting up servers on windows is a huge
 pain and is usually not worth your time. The rest of this tutorial assumes you're using
-linux. If you really want to use windows, contact me and I can help you.
+linux. If you really want to use windows, you're on your own.
 
 Next you'll just need to set up a systemd service to manage the program. If you're new to
 systemd, I recommend this video: https://youtu.be/fYQBvjYQ63U

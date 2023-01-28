@@ -44,6 +44,8 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 	let req: Request = Request::from(&stream);
 	let mut res: Response = Response::new();
 
+	println!("{:?}", req);
+
 	match (&req.method[..], &req.path[..])
 	{
 		// Send an instruction to a roku device

@@ -177,6 +177,7 @@ fn handle_request(stream: &mut TcpStream, devices: & Vec<RokuDevice>)
 						{
 							if CONTENT_TYPES.contains(extension)
 							{
+								res.headers.pop(); // Get rid of the text/plain header
 								let mut content_type: String = String::from("Content-Type: text/");
 								content_type.push_str(extension);
 								res.headers.push(content_type);

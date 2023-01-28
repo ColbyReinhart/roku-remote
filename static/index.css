@@ -46,6 +46,11 @@ i {
     align-content: flex-start;
 }
 
+.arrowKeysRow button {
+    width: 6rem;
+    height: 6rem;
+}
+
 /* ID Styles */
 
 #Power {

@@ -1,75 +1,103 @@
 /* General */
 
 body {
-    background-color: #222222;
+	background-color: #222222;
+	font-family: system-ui;
 }
 
 button {
-    border: none;
-    font-size: 3rem;
-    font-weight: bolder;
+	border: none;
+	font-size: 3rem;
+	font-weight: bolder;
 }
 
 i {
-    position: relative;
+	position: relative;
 }
 
 .RokuButton {
-    color: white;
-    background-color: purple;
-    border-radius: 5vmin;
-    padding: 1rem;
+	color: white;
+	background-color: purple;
+	border-radius: 5vmin;
+	padding: 1rem;
 }
 
 .arrowButton {
-    font-size: 4rem;
-    margin: 0.3rem;
+	font-size: 4rem;
+	margin: 0.3rem;
 }
 
 .buttonRow {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    align-content: flex-start;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	align-items: center;
+	align-content: flex-start;
+	margin-top: 2vh;
+	margin-bottom: 2vh;
 }
 
 .arrowKeysRow {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    align-content: flex-start;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: flex-start;
 }
 
 .arrowKeysRow button {
-    width: 6rem;
-    height: 6rem;
+	width: 6rem;
+	height: 6rem;
 }
 
 /* ID Styles */
 
+#topMenu {
+	height: 12vh;
+}
+
 #Power {
-    border-radius: 2rem;
+	border-radius: 2rem;
 }
 
 #deviceList {
-    width: 40vw;
-    height: 5vh;
+	width: 40vw;
+	height: 5vh;
 }
 
 #Features {
-    background-color: #222222;
-    border: solid white 5px;
-    padding: 0.5rem;
-    color: white;
-    border-radius: 0.5rem;
+	background-color: #222222;
+	border: solid white 5px;
+	padding: 0.5rem;
+	color: white;
+	border-radius: 0.5rem;
 }
 
 #Home, #Back {
-    width: 30vw;
+	width: 30vw;
+}
+
+#menu {
+	display: none;
+	background-color: #222222;
+	width: 100vw;
+	height: 88vh;
+	position: absolute;
+	top: 12vh;
+	left: 0;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	align-content: center;
+	padding-top: 3vh;
+	color: white;
+	font-size: 2rem;
+}
+
+#text {
+	width: 70vw;
+	height: 4vh;
 }
